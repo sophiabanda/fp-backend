@@ -26,7 +26,6 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid username or password' });
   }
 
-  // Check if visitorId from request matches any in the user's visitorId array
   const idMatch = user.visitorId.includes(visitorId);
 
   res.json({

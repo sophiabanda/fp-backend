@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import { unsealEventsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import users from './users.js';
+import { unsealEventsResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 dotenv.config();
 const app = express();
@@ -17,7 +17,7 @@ if (!decryptionKey) {
 }
 
 app.post('/login', (req, res) => {
-  const { username, password, visId } = req.body;
+  const { username, password, visitorId } = req.body;
 
   const user = users.find(
     (u) => u.username === username && u.password === password
@@ -26,13 +26,14 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid username or password' });
   }
 
-  const fpMatch = user.visId.includes(fingerprint);
+  // Check if visitorId from request matches any in the user's visitorId array
+  const idMatch = user.visitorId.includes(visitorId);
 
   res.json({
     success: true,
     user: username,
-    fingerprintMatch,
-    message: fingerprintMatch
+    idMatch,
+    message: idMatch
       ? 'Login successful'
       : 'Login successful but unknown device',
   });
@@ -73,9 +74,10 @@ app.post('/sealed', async (req, res) => {
       ]
     );
 
-    res.json({ success: true, data: unsealedData });
     const fingerprint = unsealedData.products.identification.data.visitorId;
     console.log(unsealedData.products.identification);
+
+    res.json({ success: true, data: unsealedData });
   } catch (error) {
     console.error('Error during decryption:', error);
     res.status(500).json({ error: 'Failed to decrypt sealedResult' });

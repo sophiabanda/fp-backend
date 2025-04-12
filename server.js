@@ -60,9 +60,6 @@ app.post('/sealed', async (req, res) => {
         .json({ error: 'Missing sealedResult in request body' });
     }
 
-    //in lieu of DB for now:
-    console.log('sealedResult:::', sealed);
-
     const unsealedData = await unsealEventsResponse(
       Buffer.from(sealed, 'base64'),
       [
@@ -72,10 +69,8 @@ app.post('/sealed', async (req, res) => {
         },
       ]
     );
-
-    const fingerprint = unsealedData.products.identification.data.visitorId;
-    console.log(unsealedData.products.identification);
-
+    // const fingerprint = unsealedData.products.identification.data.visitorId;
+    // console.log(unsealedData.products.identification);
     res.json({ success: true, data: unsealedData });
   } catch (error) {
     console.error('Error during decryption:', error);

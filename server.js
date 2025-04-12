@@ -69,8 +69,7 @@ app.post('/sealed', async (req, res) => {
         },
       ]
     );
-    // const fingerprint = unsealedData.products.identification.data.visitorId;
-    // console.log(unsealedData.products.identification);
+
     res.json({ success: true, data: unsealedData });
   } catch (error) {
     console.error('Error during decryption:', error);

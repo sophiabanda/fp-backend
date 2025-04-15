@@ -39,14 +39,14 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/trust-device', (req, res) => {
-  const { username, fingerprint } = req.body;
+  const { username, visitorId } = req.body;
   const user = users.find((u) => u.username === username);
 
-  if (!user || user.knownFingerprints.includes(fingerprint)) {
+  if (!user || user.visitorId.includes(visitorId)) {
     return res.status(400).json({ error: 'Invalid user or already trusted' });
   }
 
-  user.knownFingerprints.push(fingerprint);
+  user.visitorId.push(visitorId);
   res.json({ success: true, message: 'Device trusted' });
 });
 

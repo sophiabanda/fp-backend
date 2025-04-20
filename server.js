@@ -78,5 +78,5 @@ app.post('/sealed', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5001;
-const HOST = '127.0.0.1';
+const HOST = '0.0.0.0';
 app.listen(PORT, HOST, () => console.log(`Server running on port ${PORT}`));

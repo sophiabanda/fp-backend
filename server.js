@@ -7,7 +7,13 @@ import { unsealEventsResponse } from '@fingerprintjs/fingerprintjs-pro-server-ap
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 const decryptionKey = process.env.BASE64_KEY;
 
